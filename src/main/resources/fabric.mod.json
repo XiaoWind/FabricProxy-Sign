@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "fabricproxy-sign",
+  "version": "${version}",
+  "name": "FabricProxy-Sign",
+  "description": "Right-click a sign in the lobby to join a server through Velocity. 在大厅右键告示牌即可通过 Velocity 进入对应服务器。",
+  "authors": ["XiaoWind"],
+  "contact": {
+    "homepage": "https://github.com/XiaoWind/FabricProxy-Sign",
+    "sources": "https://github.com/XiaoWind/FabricProxy-Sign",
+    "issues": "https://github.com/XiaoWind/FabricProxy-Sign/issues"
+  },
+  "license": "MIT",
+  "environment": "server",
+  "entrypoints": {
+    "main": ["com.fabricproxysign.FabricProxySignMod"]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "fabric-api": "*",
+    "minecraft": "~26.2",
+    "java": ">=25"
+  },
+  "suggests": {
+    "fabricproxy-lite": "*"
+  }
+}
