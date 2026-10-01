@@ -26,7 +26,7 @@
 
 ## 构建
 
-本模组目标版本为 **Minecraft 26.2**（26.2 已无 Yarn，使用 **Mojang 官方映射/Mojmap**），构建需要 **JDK 25** 与 **Gradle 9.5.1**。构建前请核对 `gradle.properties` 里的 `loader_version`、`fabric_version`，可到 <https://fabricmc.net/develop/> 查看当前推荐值。
+本模组目标版本为 **Minecraft 26.3**（26.x 已无 Yarn，使用 **Mojang 官方映射/Mojmap**），构建需要 **JDK 25** 与 **Gradle 9.5.1**。构建前请核对 `gradle.properties` 里的 `loader_version`、`fabric_version`，可到 <https://fabricmc.net/develop/> 查看当前推荐值。
 
 ```powershell
 # 在项目根目录（FabricProxy-Sign/）执行
@@ -34,13 +34,13 @@ gradle wrapper          # 首次生成 gradlew（并请提交到 git，方便 CI
 ./gradlew build
 ```
 
-生成的模组在：`build/libs/fabricproxy-sign-1.0.0.jar`。
+生成的模组在：`build/libs/fabricproxy-sign-1.1.0.jar`。
 
 > 提示：如果本机没有 Gradle，最简单的方式是用 **IntelliJ IDEA**（配合 Minecraft Development 插件）直接打开本目录导入，它会自动处理 Gradle 和 wrapper。
 
 ## 安装
 
-1. 把 `build/libs/fabricproxy-sign-1.0.0.jar` 放进**大厅服务器**的 `mods/` 目录（和 FabricProxy-Lite、Fabric API 放在一起）。
+1. 把 `build/libs/fabricproxy-sign-1.1.0.jar` 放进**大厅服务器**的 `mods/` 目录（和 FabricProxy-Lite、Fabric API 放在一起）。
 2. 重启大厅服务器。日志出现 `[FabricProxy-Sign] 已启用…` 即成功。
 
 > 只需要装在大厅服，其它游戏子服不用装。
@@ -113,15 +113,15 @@ survival
 - 推荐用 Modrinth 官方 **GitHub App** 连接该仓库：之后在 GitHub 打 tag 发 release，Modrinth 会自动同步版本（无需 token）。
 
   ```bash
-  git tag v1.0.0
-  git push origin v1.0.0
+  git tag v1.1.0
+  git push origin v1.1.0
   ```
 
-- 也可以手动上传：把 `build/libs/fabricproxy-sign-1.0.0.jar` 上传到 Modrinth 项目对应版本页。
+- 也可以手动上传：把 `build/libs/fabricproxy-sign-1.1.0.jar` 上传到 Modrinth 项目对应版本页。
 
 ## 二次开发说明
 
-- 核心逻辑在 `src/main/java/com/fabricproxysign/SignClickHandler.java`（右键事件 + 读告示牌 + 发送）。正反面判定直接调用原版 `SignBlockEntity.isFacingFrontText(Player)`。
+- 核心逻辑在 `src/main/java/com/fabricproxysign/SignClickHandler.java`（右键事件 + 读告示牌 + 发送）。正反面判定直接调用原版 `SignBlockEntity.getSlotPlayerIsFacing(Player)` + `getText(SignTextSlot)`。
 - `ConnectPayload.java` 定义了 `bungeecord:main` 通道的负载与编解码。
 - `FabricProxySignConfig.java` 负责配置文件读写。
 - 如果未来的 Fabric API 移除了当前网络 API，只需改 `ConnectPayload` 与 `SignClickHandler#sendToServer` 这一处发送逻辑，其余不变。
