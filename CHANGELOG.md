@@ -2,6 +2,11 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/) 规范，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.1.0] - 未发布
+
+### 变更
+- 升级到 Minecraft **26.3**（loader 0.19.5、fabric-api 0.161.0+26.3）。
+
 ## [1.0.0] - 未发布
 
 ### 新增
