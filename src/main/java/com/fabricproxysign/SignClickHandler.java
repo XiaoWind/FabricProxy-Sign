@@ -11,11 +11,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SignText;
+import net.minecraft.world.level.block.entity.SignTextSlot;
 import net.minecraft.world.phys.BlockHitResult;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -42,9 +44,9 @@ public class SignClickHandler implements UseBlockCallback {
             return InteractionResult.PASS;
         }
 
-        // 原版方法：判断玩家面对的是告示牌正面还是背面
-        boolean front = sign.isFacingFrontText(player);
-        String serverName = readServerName(sign, front);
+        // 原版方法：取玩家面对的那一面（FRONT / BACK），再读该面的文字
+        SignTextSlot slot = sign.getSlotPlayerIsFacing(player);
+        String serverName = readServerName(sign, slot);
         if (serverName == null || serverName.isBlank()) {
             return InteractionResult.PASS;
         }
@@ -62,17 +64,17 @@ public class SignClickHandler implements UseBlockCallback {
         return InteractionResult.SUCCESS;
     }
 
-    private String readServerName(SignBlockEntity sign, boolean front) {
-        if (config.serverNameLine < 0 || config.serverNameLine >= 4) {
-            return null;
-        }
-        SignText text = front ? sign.getFrontText() : sign.getBackText();
+    private String readServerName(SignBlockEntity sign, SignTextSlot slot) {
+        SignText text = sign.getText(slot);
         return readLine(text, config.serverNameLine);
     }
 
     private String readLine(SignText text, int index) {
-        Component line = text.getMessage(index, false);
-        String value = line.getString().trim();
+        List<Component> lines = text.getMessages(false);
+        if (index < 0 || index >= lines.size()) {
+            return null;
+        }
+        String value = lines.get(index).getString().trim();
         if (!config.stripPrefix.isEmpty() && value.startsWith(config.stripPrefix)) {
             value = value.substring(config.stripPrefix.length()).trim();
         }
